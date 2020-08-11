@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   
   def index
@@ -8,7 +8,7 @@ class TasksController < ApplicationController
   end
   
   def show
-    set_task
+    correct_user
   end
 
   def new
@@ -28,11 +28,11 @@ class TasksController < ApplicationController
   end
 
   def edit
-    set_task
+    correct_user
   end
   
   def update
-    set_task
+    correct_user
     
     if @task.update(task_params)
       flash[:success] = 'Task は正常に更新されました'
@@ -44,7 +44,7 @@ class TasksController < ApplicationController
   end
   
   def destroy
-    set_task
+    correct_user
     @task.destroy
     
     flash[:success] = 'Task は正常に削除されました'
@@ -53,8 +53,11 @@ class TasksController < ApplicationController
   
   private
   
-  def set_task
-    @task = current_user.tasks.find(params[:id])
+  def correct_user
+    @micropost = current_user.microposts.find_by(id: params[:id])
+    unless @micropost
+      redirect_to root_url
+    end
   end
   
   def task_params
