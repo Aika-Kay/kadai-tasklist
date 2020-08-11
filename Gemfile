@@ -55,4 +55,3 @@ group :production do
 end
 
 gem 'kaminari'
-
