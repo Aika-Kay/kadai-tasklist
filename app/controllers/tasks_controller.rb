@@ -6,7 +6,7 @@ class TasksController < ApplicationController
   
   def index
     if logged_in?
-      @tasks = Task.all
+      @tasks = current_user.tasks
     end
   end
   
@@ -19,9 +19,9 @@ class TasksController < ApplicationController
   end
   
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
     
-    if @task.save
+    if @task.save!
       flash[:success] = 'Task が正常に投稿されました'
       redirect_to @task
     else
