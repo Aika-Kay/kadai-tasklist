@@ -54,7 +54,7 @@ class TasksController < ApplicationController
   private
   
   def set_task
-    @task = surrent_user.tasks.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
   end
   
   def task_params
